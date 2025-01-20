@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
+    <link rel="icon" href="./svg/red-flag.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="UI.css">
+</head>
+
+<body>
+    <div id="welcomeOverlay">
+        <h1>Welcome to Minesweeper</h1>
+        <button onclick="document.getElementById('welcomeOverlay').style.display = 'none'">start</button>
+    </div>
+
+    <div>Mines Left: <span id="mines-count"></span></div>
+    <div id="timer">Time: 0s</div>
+    <div id="grid"></div>
+    <select name="difficulty" id="difficulty">
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="expert">Expert</option>
+    </select>
+    <button id="startBtn">New Game</button>
+
+    <aside>
+        <h2>Wins:</h2>
+        <div id="winsContainer"></div>
+    </aside>
+
+
+    <div class="dropdown">
+        <img src="svg/settings.svg" onclick="dropdown()" id="dropbtn">
+        <div id="myDropdown" class="dropdown-content">
+            <label class="switch">
+                <input id="input" id="darkModeToggle" type="checkbox" onclick="ModeToggle()" />
+                <div class="slider round">
+                    <div class="sun-moon">
+                        <svg id="moon-dot-1" class="moon-dot" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                        <svg id="moon-dot-2" class="moon-dot" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                        <svg id="moon-dot-3" class="moon-dot" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                        <svg id="light-ray-1" class="light-ray" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                        <svg id="light-ray-2" class="light-ray" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                        <svg id="light-ray-3" class="light-ray" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+
+                        <svg id="cloud-1" class="cloud-dark" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                        <svg id="cloud-2" class="cloud-dark" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                        <svg id="cloud-3" class="cloud-dark" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                        <svg id="cloud-4" class="cloud-light" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                        <svg id="cloud-5" class="cloud-light" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                        <svg id="cloud-6" class="cloud-light" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="50"></circle>
+                        </svg>
+                    </div>
+                    <div class="stars">
+                        <svg id="star-1" class="star" viewBox="0 0 20 20">
+                            <path
+                                d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z">
+                            </path>
+                        </svg>
+                        <svg id="star-2" class="star" viewBox="0 0 20 20">
+                            <path
+                                d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z">
+                            </path>
+                        </svg>
+                        <svg id="star-3" class="star" viewBox="0 0 20 20">
+                            <path
+                                d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z">
+                            </path>
+                        </svg>
+                        <svg id="star-4" class="star" viewBox="0 0 20 20">
+                            <path
+                                d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </label>
+
+            <input type="checkbox" id="checkboxInput">
+            <label for="checkboxInput" class="toggleSwitch">
+
+                <div class="speaker"><svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 75 75">
+                        <path
+                            d="M39.389,13.769 L22.235,28.606 L6,28.606 L6,47.699 L21.989,47.699 L39.389,62.75 L39.389,13.769z"
+                            style="stroke:#fff;stroke-width:5;stroke-linejoin:round;fill:#fff;"></path>
+                        <path
+                            d="M48,27.6a19.5,19.5 0 0 1 0,21.4M55.1,20.5a30,30 0 0 1 0,35.6M61.6,14a38.8,38.8 0 0 1 0,48.6"
+                            style="fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round"></path>
+                    </svg></div>
+
+                <div class="mute-speaker"><svg version="1.0" viewBox="0 0 75 75" stroke="#fff" stroke-width="5">
+                        <path d="m39,14-17,15H6V48H22l17,15z" fill="#fff" stroke-linejoin="round"></path>
+                        <path d="m49,26 20,24m0-24-20,24" fill="#fff" stroke-linecap="round"></path>
+                    </svg></div>
+
+            </label>
+
+            <div id="info" onclick="info()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path
+                        d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg></div>
+        </div>
+    </div>
+
+    <div id="game-guide">
+        <h1>Minesweeper Game Guide</h1>
+        <p>Welcome to the Minesweeper game! This guide will explain the rules and controls of the game so you can start
+            playing and enjoy the challenge.</p>
+
+        <h2>Objective</h2>
+        <p>The objective of Minesweeper is to uncover all the empty squares on the grid without triggering any mines. If
+            you uncover a square that contains a mine, the game ends, and you lose. If you uncover all the safe squares
+            without hitting any mines, you win the game.</p>
+
+        <h2>Game Setup</h2>
+        <p>The game is played on a rectangular grid of squares. Some squares are hidden mines, and your goal is to avoid
+            them. Each square may also display a number indicating how many mines are adjacent to that square. This
+            helps you deduce which squares are safe to uncover.</p>
+
+        <h2>Rules</h2>
+        <ul>
+            <li><strong>Start the Game:</strong> When you start a new game, the grid is filled with hidden squares, and
+                a number of mines are placed randomly.</li>
+            <li><strong>Uncovering Squares:</strong> Click on a square to uncover it. If it's safe, it will show a
+                number indicating how many mines are adjacent to it. If it's blank (a “0”), it will open neighboring
+                squares automatically.</li>
+            <li><strong>Mines:</strong> If you click on a square that contains a mine, the game is over, and the mine(s)
+                will be revealed.</li>
+            <li><strong>Flags:</strong> You can mark a square with a flag by right-clicking on it. Use flags to mark
+                suspected mines, helping you avoid them. This can be especially helpful in marking areas you think are
+                dangerous.</li>
+            <li><strong>Winning:</strong> You win the game when you uncover all the safe squares, leaving only the mines
+                flagged.</li>
+            <li><strong>Losing:</strong> You lose the game if you click on a mine.</li>
+        </ul>
+
+        <h2>Controls</h2>
+        <ul>
+            <li><strong>Left Click:</strong> To uncover a square, click on it with the left mouse button. If it is a
+                number or blank, it will be revealed. If it's a mine, the game ends.</li>
+            <li><strong>Right Click:</strong> To flag a square, right-click on it. A flag will appear, indicating you
+                think there's a mine there. Right-click again to remove the flag.</li>
+            <li><strong>Reset Button:</strong> You can start a new game at any time by clicking the "Reset" button
+                (usually at the top or bottom of the screen).</li>
+            <li><strong>Timer:</strong> The game tracks how long it takes for you to win or lose. Try to beat your best
+                time!</li>
+        </ul>
+
+        <h2>Strategy Tips</h2>
+        <ul>
+            <li><strong>Start in the Corners:</strong> The first click is always safe, so starting from the corners or
+                edges may give you the largest area of safe squares.</li>
+            <li><strong>Look for Patterns:</strong> When you uncover a square with a number, use the numbers on adjacent
+                squares to figure out where the mines might be.</li>
+            <li><strong>Use Flags Wisely:</strong> If you're sure that a square has a mine, flag it. But be careful not
+                to over-flag, as flags are limited in some versions of the game.</li>
+            <li><strong>Don't Rush:</strong> Take your time to carefully think about each move. Minesweeper is as much a
+                game of logic as it is of speed.</li>
+        </ul>
+
+        <p>Good luck, and enjoy the game!</p>
+    </div>
+
+
+
+
+
+    <script src="script.js"></script>
+    <script src="UI.js"></script>
+</body>
+
+</html>
