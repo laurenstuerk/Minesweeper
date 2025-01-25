@@ -30,18 +30,13 @@ let difficulty_presets = {
         screenSize: 1100,
         gridWidth: 1,
         gridHeight: 1,
-
     },
 };
-
 
 const difficulty = document.querySelector("#difficulty");
 
 // Initialize game on start button click
 document.querySelector("#startBtn").addEventListener("click", startGame);
-
-
-
 
 function startGame() {
     // Reset game state
@@ -72,10 +67,11 @@ function startGame() {
         mineCount = difficulty_presets.expert.mineCount;
         screenSize = difficulty_presets.expert.screenSize;
     }
+    // Set grid dimensions
     document.getElementById("grid").style.width = screenSize + 'px';
     document.getElementById("grid").style.height = screenSize + 'px';
 
-
+    // Remove any existing game over overlay
     const existingOverlay = document.querySelector('.game-over-overlay');
     if (existingOverlay) {
         existingOverlay.remove();
@@ -99,6 +95,7 @@ function startGame() {
         grid.push(row);
     }
 
+    // Start game timer and place mines
     startTimer();
     setMines();
 }
@@ -111,6 +108,9 @@ function startTimer() {
     }, 1000);
 }
 
+
+//  Randomly places mines on the grid
+//   Ensures no duplicate mine locations
 
 function setMines() {
     let minesLeft = mineCount;
@@ -140,7 +140,7 @@ function placeFlag(tile) {
         updateMineCount(-1);
     }
 }
-
+// Updates the displayed mine count
 function updateMineCount(change) {
     const minesDisplay = document.getElementById("mines-count");
     const currentCount = parseInt(minesDisplay.innerText);
@@ -223,9 +223,8 @@ function checkMine(r, c) {
     if (tile.classList.contains("tile-clicked")) {
         return;
     }
-
+    // Mark tile as clicked and update game state
     tile.classList.add("tile-clicked");
-    console.log(tile.id);
     tilesClicked += 1;
     tile.style.backgroundColor = "lightgreen";
     playAudio('./sound/tile.mp3');
@@ -245,7 +244,7 @@ function checkMine(r, c) {
             }
         }
     }
-
+    // Display mine count or recursively check adjacent tiles
     if (minesFound > 0) {
         tile.innerText = minesFound;
         tile.classList.add(`x${minesFound}`);
@@ -260,11 +259,7 @@ function checkMine(r, c) {
     }
 }
 
-
-startGame();
-
-
-
+// Plays audio if sound is enabled
 function playAudio(fileName) {
     if (document.getElementById("checkboxInput").checked == true) {
         return;
@@ -272,3 +267,5 @@ function playAudio(fileName) {
     let audio = new Audio(fileName);
     audio.play();
 }
+// // Start the game when the script loads
+startGame();
